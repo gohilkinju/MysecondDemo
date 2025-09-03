@@ -8,18 +8,24 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  Touchable,
+  TouchableOpacity,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import images from "./images";
 import axios from "axios";
+import navigationScreen from "./navigationScreen";
+import { useNavigation } from "@react-navigation/native";
+import responsivePixels from "./responsivePixels";
+import fonts from "./fonts";
+import WeatherService from "./API/weatherService";
 
 
 
 const weatherSearch = () => {
-
+  const navigation = useNavigation();
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
-  const API_KEY = "b0efb02d99a2d83b47796bf8b75d5dad";
 
 
   useEffect(() => {
@@ -36,10 +42,9 @@ const weatherSearch = () => {
 
   const getWeather = async () => {
     try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${API_KEY}&units=metric`
-      );
-      setWeather(response.data);
+      const weatherRes = await WeatherService.getWeatherByCity(city);
+      setWeather(weatherRes.data);
+
     } catch (error) {
       console.error(error);
       setWeather(null);
@@ -47,28 +52,28 @@ const weatherSearch = () => {
   };
 
 
-  const renderItem = ({ item }: any) => {
-    console.log("FlatList Item:", item);
+  // const renderItem = ({ item }: any) => {
+  //   console.log("FlatList Item:", item);
 
-    return (
-      <LinearGradient
-        colors={["#6A0DAD", "#3B0A45"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.card}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={styles.temp}>{item?.main?.temp}°</Text>
-          <Text style={styles.range}>
-            H:{item.high}°  L:{item.low}°
-          </Text>
-          <Text style={styles.city}>{item.city}</Text>
-          <Text style={styles.condition}>{item.condition}</Text>
-        </View>
-        <Image source={item.icon} style={styles.icon} resizeMode="contain" />
-      </LinearGradient>
-    );
-  };
+  //   return (
+  //     <LinearGradient
+  //       colors={["#6A0DAD", "#3B0A45"]}
+  //       start={{ x: 0, y: 0 }}
+  //       end={{ x: 1, y: 1 }}
+  //       style={styles.card}
+  //     >
+  //       <View style={{ flex: 1 }}>
+  //         <Text style={styles.temp}>{item?.main?.temp}°</Text>
+  //         <Text style={styles.range}>
+  //           H:{item.high}°  L:{item.low}°
+  //         </Text>
+  //         <Text style={styles.city}>{item.city}</Text>
+  //         <Text style={styles.condition}>{item.condition}</Text>
+  //       </View>
+  //       <Image source={item.icon} style={styles.icon} resizeMode="contain" />
+  //     </LinearGradient>
+  //   );
+  // };
 
   return (
     <LinearGradient
@@ -78,8 +83,7 @@ const weatherSearch = () => {
       end={{ x: 0.5, y: 1 }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        {/* <Text style={styles.header}>Weather</Text> */}
-
+        <Text style={styles.header}>Weather</Text>
 
         <TextInput
           style={styles.search}
@@ -89,30 +93,30 @@ const weatherSearch = () => {
           onChangeText={setCity}
           onSubmitEditing={getWeather}
         />
-        {weather &&(
-         <LinearGradient
-        colors={["#6A0DAD", "#3B0A45"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.card}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={styles.temp}>{weather?.main?.temp}°</Text>
-          <Text style={styles.range}>
-            H:{weather?.main?.temp_max}°  L:{weather?.main?.temp_min}°
-          </Text>
-          <Text style={styles.city}>{weather?.name}</Text>
-          <Text style={styles.condition}>{weather?.weather?.description}</Text>
-        </View>
-        {/* <Image source={item.icon} style={styles.icon} resizeMode="contain" /> */}
-      </LinearGradient>)}
+        {weather && (
+          <TouchableOpacity
+            style={{ marginVertical: 30, marginTop: 50 }}
+            onPress={() => navigation.navigate('searchDetails', { weatherData: weather })}
+          >
 
-        {/* <FlatList
-          data={weather}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 30 }}
-        /> */}
+            <LinearGradient
+              colors={["#6A0DAD", "#3B0A45"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.card}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={styles.temp}>{weather?.main?.temp}°</Text>
+                <Text style={styles.range}>
+                  H:{weather?.main?.temp_max}°  L:{weather?.main?.temp_min}°
+                </Text>
+                <Text style={styles.city}>{weather?.name}</Text>
+                <Text style={styles.condition}>{weather?.weather?.description}</Text>
+              </View>
+              <Image source={images.sunRain} style={styles.icon} />
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
       </SafeAreaView>
     </LinearGradient>
   );
@@ -121,55 +125,58 @@ const weatherSearch = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    padding: responsivePixels.size15,
   },
   header: {
-    fontSize: 22,
+    fontSize: fonts.size._22px,
     color: "white",
     fontWeight: "600",
-    marginBottom: 10,
+    justifyContent:'center',
+    textAlign:'center',
+    marginBottom: responsivePixels.size10,
   },
   search: {
     backgroundColor: "#2A1B3C",
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: responsivePixels.size12,
+    padding: responsivePixels.size12,
     color: "white",
-    marginBottom: 15,
+    marginBottom: responsivePixels.size15,
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 15,
+    borderRadius: responsivePixels.size20,
+    padding: responsivePixels.size20,
+    marginBottom: responsivePixels.size15,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
   },
   temp: {
-    fontSize: 40,
+    fontSize: fonts.size._40px,
     fontWeight: "bold",
     color: "white",
   },
   range: {
-    fontSize: 14,
+    fontSize: fonts.size._14px,
     color: "#ddd",
-    marginTop: -5,
+    marginTop: -responsivePixels.size5,
   },
   city: {
-    fontSize: 16,
+    fontSize: fonts.size._16px,
     color: "white",
-    marginTop: 5,
+    marginTop: responsivePixels.size5,
   },
   condition: {
-    fontSize: 14,
+    fontSize: fonts.size._14px,
     color: "#ddd",
-    marginTop: 3,
+    marginTop: responsivePixels.size3,
   },
   icon: {
-    width: 90,
-    height: 90,
+    width: responsivePixels.size150,
+    height: responsivePixels.size200,
+    marginTop: -responsivePixels.size150,
   },
 });
 

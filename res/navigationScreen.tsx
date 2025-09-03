@@ -15,6 +15,10 @@ import weatherForecast from './weatherForecast';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import bottomTabs from './bottomTabs';
 import SpeechToText from './speakToText';
+import searchDetails from './searchDetails';
+import images from './images';
+import { Image } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator();
@@ -22,7 +26,33 @@ const Tab = createBottomTabNavigator();
 
 function bottomTabsNew() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    
+    <Tab.Navigator
+          screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconPath;
+    
+          if (route.name === 'weatherToday') {
+            iconPath = focused ? images.airQuality : images.airQuality;
+          } else if (route.name === 'weatherForecast') {
+            iconPath = focused ? images.airQuality : images.airQuality;
+          } else if (route.name === 'weatherSearch') {
+            iconPath = focused ? images.airQuality : images.airQuality;
+          }
+    
+          return <Image source={iconPath} style={{ width: size, height: size, tintColor: color }} />;
+        },
+        tabBarActiveTintColor: 'blue',
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+      backgroundColor: '#2C0E55', // set background color here
+      borderTopColor: '#2C0E55', // set border color here
+    
+    },
+
+      })}
+        >
       <Tab.Screen name="weatherToday" component={weatherToday} />
       <Tab.Screen name="weatherForecast" component={weatherForecast} />
       <Tab.Screen name="weatherSearch" component={weatherSearch} />
@@ -32,7 +62,7 @@ function bottomTabsNew() {
 export default function navigationScreen() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SpeechToText"  screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="mainScreen"  screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="firstScreen" component={firstScreen} />
         <Stack.Screen name="secondScreen" component={secondScreen} />
@@ -46,6 +76,7 @@ export default function navigationScreen() {
       <Stack.Screen name="weatherSearch" component={weatherSearch} />
       <Stack.Screen name="bottomTabsNew" component={bottomTabsNew} />
       <Stack.Screen name="SpeechToText" component={SpeechToText} />
+      <Stack.Screen name="searchDetails" component={searchDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

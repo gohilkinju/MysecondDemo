@@ -1,105 +1,43 @@
+import { Button, Image, PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, PermissionsAndroid, Platform, ActivityIndicator } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import images from "./images";
-import axios from "axios";
-import moment from "moment";
 import Geolocation from "@react-native-community/geolocation";
+import axios from "axios";
+import LinearGradient from "react-native-linear-gradient";
+import { RouteProp, useNavigation } from "@react-navigation/native";
+import moment from "moment";
+import images from "./images";
+import weather from "./weather";
 import responsivePixels from "./responsivePixels";
 import fonts from "./fonts";
 import WeatherService from "./API/weatherService";
 
-const WeatherToday = () => {
-  const city = "Ahmedabad"
-  const [weather, setWeather] = useState(null);
+// type SearchDetailsRouteProp = RouteProp<RootStackParamList, "SearchDetails">;
+
+const searchDetails = ({ route }: any) => {
+  const { weatherData } = route.params;
+  const navigation = useNavigation();
   const [hourlyWeather, setHourlyWeather] = useState([]);
-  const [location, setLocation] = useState(null);
-
-  const [loading, setLoading] = useState(true); // progress state
-
   useEffect(() => {
-    requestLocationPermission()
-    getLocation()
+    fetchWeather(weatherData?.coord?.lat, weatherData?.coord?.lon);
   }, []);
-  const requestLocationPermission = async () => {
-    if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    }
-    return true;
-  };
-
-  const getLocation = async () => {
-    const hasPermission = await requestLocationPermission();
-    if (!hasPermission) return;
-
-    Geolocation.getCurrentPosition(
-      (position) => {
-
-        setLocation(position?.coords);
-        console.log("location", location);
-        if (position?.coords?.latitude, position?.coords?.longitude) {
-          getWeather(position?.coords?.latitude, position?.coords?.longitude)
-        }
-
-      },
-      (error) => {
-        console.error(error);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    );
-  };
-
-
-
-  const getWeather = async (lat: number, lng: number) => {
-    try {
-      
-      const weatherRes = await WeatherService.getCurrentWeather(lat, lng);
-      setWeather(weatherRes.data);
-      {
-        weatherRes?.data?.coord?.lat, weatherRes?.data?.coord?.lon &&
-          (
-            fetchWeather(weatherRes?.data?.coord?.lat, weatherRes?.data?.coord?.lon)
-          )
-      }
-
-      setLoading(false); // hide progress when done
-    } catch (error) {
-      console.error(error);
-      setWeather(null);
-      setLoading(false); // hide progress when done
-    }
-    finally {
-      setLoading(false); // hide progress when done
-    }
-
-
-  };
 
   const fetchWeather = async (lat: any, lon: any) => {
     try {
+      
       const forecastRes = await WeatherService.getForecast(lat, lon);
 
       console.log("whole day data get", forecastRes.data)
       setHourlyWeather(forecastRes?.data?.list.slice(0, 8)); // first 24 hours
 
+      console.log("Hourly Weather Data:", forecastRes?.data?.list);
+
     } catch (error) {
       console.error(error);
     }
   };
 
-  if (loading) {
-    return (
-      <LinearGradient colors={["#2C0E55", "#462283", "#7B3BA3"]} style={styles.container}>
-        <ActivityIndicator size="large" color="#FEC52E" />
-        <Text style={{ color: "#fff", marginTop: 20 }}>Loading Weather Data...</Text>
-      </LinearGradient>
-    );
-  }
 
+  console.log("weatherData in searchDetails:", weatherData);
 
   return (
     <LinearGradient
@@ -110,6 +48,11 @@ const WeatherToday = () => {
     >
 
 
+      <TouchableOpacity
+        style={{ position: "absolute", top: 40, left: 20, zIndex: 10 }}
+        onPress={() => navigation.goBack()}>
+        <Text style={[styles.arrowButton, { margin: 2 }]}>{"<"}</Text>
+      </TouchableOpacity>
       {/* Weather Icon */}
       <Image
         source={images.weatherImage} // sunny-rain icon
@@ -119,10 +62,14 @@ const WeatherToday = () => {
 
 
       {/* Temperature Info */}
-      <Text style={styles.temp}>{weather?.main?.temp}°</Text>
-      <Text style={styles.precip}>{weather?.name}</Text>
-      <Text style={styles.range}>Max: {weather?.main?.temp_max}°   Min: {weather?.main?.temp_min}°</Text>
-
+      <Text style={styles.temp}>{weatherData?.main?.temp}°</Text>
+      <Text style={styles.precip}>{weatherData?.name}</Text>
+      <Text style={styles.range}>Max: {weatherData?.main?.temp_max}°   Min: {weatherData?.main?.temp_min}°</Text>
+      <Text style={styles.infoTitle}>☀ SUNRISE {moment.unix(weatherData?.sys?.sunrise).utcOffset(weatherData?.timezone / 60).format("hh:mm A")}</Text>
+      {/* <Text style={styles.infoValue}>
+            
+            </Text> */}
+      <Text style={styles.infoSub}>Sunset: {moment.unix(weatherData?.sys?.sunset).utcOffset(weatherData?.timezone / 60).format("hh:mm A")}</Text>
       {/* House Illustration */}
       <Image
         source={images.home}
@@ -142,12 +89,19 @@ const WeatherToday = () => {
           {/* Date Row */}
           <View style={styles.dateRow}>
             <Text style={[styles.dateText, { color: "#fff" }]}>Today</Text>
-            <Text style={[styles.dateText, { color: "#bbb" }]}>{moment(weather?.dt * 1000).format("YYYY-MM-DD HH:mm")}
+            <Text style={[styles.dateText, { color: "#bbb" }]}>{moment(weatherData?.dt * 1000).format("YYYY-MM-DD HH:mm")}
             </Text>
           </View>
 
           {/* Hourly Forecast Row */}
           <View style={styles.hourRow}>
+
+            {/* <Text style={styles.infoTitle}>☀ SUNRISE</Text>
+
+          <Text style={styles.infoValue}>
+            {moment.unix(weatherData?.sys?.sunrise).utcOffset(weatherData?.timezone / 60).format("hh:mm A")}
+            </Text>
+          <Text style={styles.infoSub}>Sunset: {moment.unix(weatherData?.sys?.sunset).utcOffset(weatherData?.timezone / 60).format("hh:mm A")}</Text> */}
 
             <ScrollView
               horizontal
@@ -155,6 +109,7 @@ const WeatherToday = () => {
               contentContainerStyle={styles.daysRow}
               scrollEventThrottle={25}
             >
+
               {hourlyWeather.map((item, index) => {
 
                 return (
@@ -173,32 +128,49 @@ const WeatherToday = () => {
         </View>
       </LinearGradient>
     </LinearGradient>
+
   );
-};
-
-export default WeatherToday;
-
+}
+export default searchDetails
 const styles = StyleSheet.create({
+  infoValue: {
+    color: "#fff",
+    fontSize: fonts.size._18px,
+    marginBottom: responsivePixels.size5,
+  },
+  infoSub: {
+    color: "#bbb",
+    fontSize: fonts.size._12px,
+  },
+  infoTitle: {
+    color: "#ccc",
+    fontSize: fonts.size._12px,
+    marginBottom: responsivePixels.size5,
+  },
+  arrowButton: {
+    fontSize: fonts.size._28px,
+    color: "#fff",
+  },
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    paddingTop: responsivePixels.size10,
   },
-  weatherIcon: {
+weatherIcon: {
     width: responsivePixels.size200,
     height: responsivePixels.size150,
   },
   daysRow: {
-    flexDirection: "row",
-    gap: responsivePixels.size15,
-    marginBottom: responsivePixels.size25,
-  },
+      flexDirection: "row",
+      gap: responsivePixels.size15,
+      marginBottom: responsivePixels.size25,
+    },
   temp: {
-    fontSize: fonts.size._50px,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: responsivePixels.size10,
-  },
+      fontSize: fonts.size._50px,
+      fontWeight: "bold",
+      color: "#fff",
+      marginTop: responsivePixels.size10,
+    },
   precip: {
     fontSize: fonts.size._24px,
     color: "#ddd",
@@ -237,7 +209,7 @@ const styles = StyleSheet.create({
   },
   hourItem: {
     alignItems: "center",
-    marginHorizontal: responsivePixels.size10
+    marginHorizontal: 10
   },
   hourTemp: {
     color: "#fff",
@@ -267,4 +239,4 @@ const styles = StyleSheet.create({
     marginBottom: responsivePixels.size30,
 
   }
-});
+})

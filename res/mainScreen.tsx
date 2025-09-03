@@ -4,8 +4,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import images from './images';
 import { useNavigation } from '@react-navigation/native';
 import WeatherToday from './weatherToday';
+import responsivePixels from './responsivePixels';
+import fonts from './fonts';
 
 export default function mainScreen({navigation}) {
+
+
+
+
   return (
       <LinearGradient
       colors={['#0D1B3D', '#3E2C8B', '#A32CA0']} 
@@ -43,35 +49,35 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: fonts.size._22px,
     fontWeight: 'bold',
   },
   image: {
-    width: 400,
-    height: 400,
-    marginTop: 80,
+    width: responsivePixels.size400,
+    height: responsivePixels.size400,
+    marginTop: responsivePixels.size80,
   },
    title: {
-    fontSize: 50,
+    fontSize: fonts.size._50px,
     fontWeight: "bold",
     color: "#fff",
   },
   subTitle: {
-    fontSize: 50,
+    fontSize: fonts.size._50px,
     fontWeight: "bold",
     color: "#FEC52E",
-    marginBottom: 40,
+    marginBottom: fonts.size._40px,
   },
   button: {
     backgroundColor: "#FEC52E",
-    paddingVertical: 14,
-    paddingHorizontal: 50,
-    borderRadius: 30,
-    marginTop:50
+    paddingVertical: responsivePixels.size14,
+    paddingHorizontal: responsivePixels.size50,
+    borderRadius: responsivePixels.size30,
+    marginTop:responsivePixels.size50
   },
   buttonText: {
     color: "#2B2C89",
-    fontSize: 18,
+    fontSize: fonts.size._18px,
     fontWeight: "bold",
   },
 });

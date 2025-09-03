@@ -6,12 +6,13 @@ export default function Weather() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const API_KEY = "b0efb02d99a2d83b47796bf8b75d5dad"; 
+        // `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${API_KEY}&units=metric`
 
 
   const getWeather = async () => {
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
       );
       setWeather(response.data);
     } catch (error) {

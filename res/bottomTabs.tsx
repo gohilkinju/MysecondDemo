@@ -13,23 +13,23 @@ export default function bottomTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName: string = "home";
+    headerShown: false,
+    tabBarIcon: ({ focused, color, size }) => {
+      let iconPath;
 
-          if (route.name === "weatherToday") {
-            iconName = "home-outline";
-          } else if (route.name === "weatherForecast") {
-            iconName = "person-outline";
-          } else if (route.name === "weatherSearch") {
-            iconName = "settings-outline";
-          }
+      if (route.name === 'weatherToday') {
+        iconPath = focused ? images.airQuality : images.airQuality;
+      } else if (route.name === 'weatherForecast') {
+        iconPath = focused ? images.airQuality : images.airQuality;
+      } else if (route.name === 'weatherSearch') {
+        iconPath = focused ? images.airQuality : images.airQuality;
+      }
 
-          return <Image source={images.airQuality}  style={{}} resizeMode="center"/>;
-        },
-        tabBarActiveTintColor: "#007AFF",
-        tabBarInactiveTintColor: "gray",
-        headerShown: false, // hide top header
-      })}
+      return <Image source={iconPath} style={{ width: size, height: size, tintColor: color }} />;
+    },
+    tabBarActiveTintColor: 'blue',
+    tabBarInactiveTintColor: 'gray',
+  })}
     >
       <Tab.Screen name="weatherToday" component={weatherToday} />
       <Tab.Screen name="weatherForecast" component={weatherForecast} />
