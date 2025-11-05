@@ -6,36 +6,35 @@ import { useNavigation } from '@react-navigation/native';
 import WeatherToday from './weatherToday';
 import responsivePixels from './responsivePixels';
 import fonts from './fonts';
+import { ScrollView } from 'react-native-gesture-handler';
 
-export default function mainScreen({navigation}) {
-
-
-
+export default function mainScreen({ navigation }) {
 
   return (
-      <LinearGradient
-      colors={['#0D1B3D', '#3E2C8B', '#A32CA0']} 
+    <LinearGradient
+      colors={['#0D1B3D', '#3E2C8B', '#A32CA0']}
       style={styles.container}
       start={{ x: 0.5, y: 0 }}   // from top center
       end={{ x: 0.5, y: 1 }}     // to bottom center
     >
-      <View style={{flex:1,alignItems:'center'}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
 
-    <Image
-        source={images.weatherImage} // place your weather image here
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Weather</Text>
-      <Text style={styles.subTitle}>ForeCasts</Text>
+          <Image
+            source={images.weatherImage} // place your weather image here
+            style={styles.image}
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Weather</Text>
+          <Text style={styles.subTitle}>ForeCasts</Text>
 
 
-  <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('bottomTabsNew')} >
-        <Text style={styles.buttonText}>Get Start</Text>
-      </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('bottomTabsNew')} >
+            <Text style={styles.buttonText}>Get Start</Text>
+          </TouchableOpacity>
+        </View>
 
-    
+      </ScrollView>
 
     </LinearGradient>
   );
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     height: responsivePixels.size400,
     marginTop: responsivePixels.size80,
   },
-   title: {
+  title: {
     fontSize: fonts.size._50px,
     fontWeight: "bold",
     color: "#fff",
@@ -73,7 +72,8 @@ const styles = StyleSheet.create({
     paddingVertical: responsivePixels.size14,
     paddingHorizontal: responsivePixels.size50,
     borderRadius: responsivePixels.size30,
-    marginTop:responsivePixels.size50
+    marginTop: responsivePixels.size50,
+    bottom: 0
   },
   buttonText: {
     color: "#2B2C89",

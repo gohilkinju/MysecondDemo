@@ -1,6 +1,6 @@
 import apiClient from "./baseApi";
 
-const API_KEY = "b0efb02d99a2d83b47796bf8b75d5dad"; // replace with your key
+const API_KEY = "8e8192c07caeee1fcc4a310a99aeb382"; // replace with your key
 
 const WeatherService = {
   // Get current weather by coordinates

@@ -23,7 +23,7 @@ type AirQualityData = {
     nh3: number;
   };
 };
-const weatherForecast = () => {
+const weatherForecast:React.FC= () => {
   const CARD_WIDTH = 90; // day card width + margin
   const scrollRef = useRef<ScrollView>(null);
   const [scrollX, setScrollX] = useState(0);
@@ -176,6 +176,7 @@ const weatherForecast = () => {
       start={{ x: 0.5, y: 0 }}
       end={{ x: 0.5, y: 1 }}
     >
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
 {/* Weather Icon */}
       <Image
         source={images.weatherImage} // sunny-rain icon
@@ -286,6 +287,7 @@ const weatherForecast = () => {
         <View style={styles.menuLine} />
         <View style={styles.menuLine} />
       </View> */}
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -355,7 +357,7 @@ const styles = StyleSheet.create({
   },
   dayText: {
     color: "#fff",
-    fontSize: fonts.size._14px,
+    fontSize: fonts.size._8px,
   },
   airCard: {
     alignSelf:"flex-start",

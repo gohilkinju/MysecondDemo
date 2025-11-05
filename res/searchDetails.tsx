@@ -200,7 +200,7 @@ weatherIcon: {
     paddingBottom: responsivePixels.size8,
   },
   dateText: {
-    fontSize: fonts.size._20px,
+    fontSize: fonts.size._16px,
     fontWeight: "bold"
   },
   hourRow: {
@@ -232,11 +232,11 @@ weatherIcon: {
     borderRadius: responsivePixels.size25,
   },
   subCardView: {
-    flex: 1,
-    alignItems: "center",
-    width: "100%",
-    borderRadius: responsivePixels.size25,
-    marginBottom: responsivePixels.size30,
-
-  }
+      flex: 1,
+      alignItems: "center",
+      width: "100%",
+      borderRadius: responsivePixels.size25,
+      marginBottom: responsivePixels.size20,
+  
+    }
 })

@@ -13,7 +13,7 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "./images";
-import strings from "./strings";
+import { strings } from "./strings";
 // import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 
@@ -25,35 +25,35 @@ const DATA = [
 ];
 
 
-const dashbordScreen = () => {
+const dashbordScreen:React.FC = () => {
 
     const renderItem = ({ item }) => (
         <View
             style={{
-                marginHorizontal:30,alignSelf:'center',marginBottom:10
+                marginHorizontal: 30, alignSelf: 'center', marginBottom: 10
             }}
         >
             <ImageBackground
                 source={require('../assets/productBg.png')}
                 style={styles.productList}
             >
-                <View style={{padding:12}}>
-                    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',marginTop:8}}>
-                    <Image  
-                    source={require('../assets/heartSelected.png')}
-                    style={{height:20,width:20,}}
-                    ></Image></View>
-                   <View style={{marginTop:20}}>
-                    <Image 
-                    source={require('../assets/electricBicycle.png')}
-                    style={{height:80,width:"100%",resizeMode:'contain'}}
-                    ></Image>
-                    <Text style={{ color: "#fff",  fontSize: 16 }}>
-                        {"Road Bike"}
-                    </Text>
-                    <Text style={{ color: "#fff",fontWeight: "bold", }}>{"PEUGEOT - LR01"}</Text>
-                    <Text style={{ color: "#fff" }}>{"$1,999.99"}</Text>
-                </View>
+                <View style={{ padding: 12 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8 }}>
+                        <Image
+                            source={require('../assets/heartSelected.png')}
+                            style={{ height: 20, width: 20, }}
+                        ></Image></View>
+                    <View style={{ marginTop: 20 }}>
+                        <Image
+                            source={require('../assets/electricBicycle.png')}
+                            style={{ height: 80, width: "100%", resizeMode: 'contain' }}
+                        ></Image>
+                        <Text style={{ color: "#fff", fontSize: 16 }}>
+                            {"Road Bike"}
+                        </Text>
+                        <Text style={{ color: "#fff", fontWeight: "bold", }}>{"PEUGEOT - LR01"}</Text>
+                        <Text style={{ color: "#fff" }}>{"$1,999.99"}</Text>
+                    </View>
                 </View>
             </ImageBackground>
         </View>
@@ -63,56 +63,55 @@ const dashbordScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#0A0D2B" }}>
+            <StatusBar 
+            barStyle="light-content"
+            backgroundColor="#0A0D2B"
+            >
+                
+            </StatusBar>
             <ImageBackground
-                source={require('../assets/mainBg.png')}
+                source={images.bghome}
                 style={styles.mainBg}
             >
-                <StatusBar barStyle="light-content" />
-                {/* Top Section */}
-                <View style={{ padding: 16 }}>
-                    <View
-                        style={styles.containerMain}
-                    >
-                        <Text style={{ fontSize: 22, color: "white", fontWeight: "bold" }}>
-                            {strings.ChooseYourBike}
-                        </Text>
-                        <TouchableOpacity>
+                <View  style={styles.containerMain}>
+                    <Text style={{ fontSize: 22, color: "white", fontWeight: "bold" }}>
+                        {strings.ChooseYourBike}
+                    </Text>
 
-                        </TouchableOpacity>
-                    </View>
                 </View>
-
-                <ImageBackground
-                    source={require('../assets/bg_product.png')}
-                    style={styles.productBg}
-                >
-
-                    <Image source={require('../assets/electricBicycle.png')}
-                        style={styles.product} />
-
-                    <View
-                        style={{
-                            paddingHorizontal: 16,
-                        }}
+                
+                    <ImageBackground
+                        source={require('../assets/bg_product.png')}
+                        style={styles.productBg}
                     >
 
-                        <Text style={{
-                            color: "#fff",
-                            fontSize: 16,
-                            marginHorizontal: 16,
-                            fontWeight: "bold",
-                        }}>
-                            30% Off
-                        </Text>
-                    </View>
-                </ImageBackground>
+                        <Image source={require('../assets/electricBicycle.png')}
+                            style={styles.product} />
 
+                        <View
+                            style={{
+                                paddingHorizontal: 16,
+                            }}
+                        >
 
-                <View style={{ 
+                            <Text style={{
+                                color: "#fff",
+                                fontSize: 16,
+                                marginHorizontal: 16,
+                                fontWeight: "bold",
+                            }}>
+                                30% Off
+                            </Text>
+                        </View>
+                    </ImageBackground>
+
+                
+                {/* <View style={{ 
                     flexDirection: "row", 
                     paddingHorizontal:16,
                     gap: 8,
-                    paddingVertical:14
+                    paddingVertical:14,
+                    backgroundColor:'red'
                  }}>
                     
                         <TouchableOpacity
@@ -234,7 +233,7 @@ const dashbordScreen = () => {
                             />
                         </TouchableOpacity>
                     </LinearGradient>
-                </View>
+                </View> */}
             </ImageBackground>
         </SafeAreaView >
     )
@@ -278,9 +277,10 @@ const styles = StyleSheet.create({
         resizeMode: "contain"
     },
     productBg: {
-        width: "98%",
+        width: "100%",
         height: 280,
-        resizeMode: "contain"
+        resizeMode: "contain",
+        marginTop: 20
     },
     productList: {
         width: 150,
@@ -298,10 +298,12 @@ const styles = StyleSheet.create({
         marginTop: 50,
         resizeMode: "contain"
     },
-    containerMain:{
+    containerMain: {
+        paddingVertical:10,
         flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
+        alignItems: "center",
+        backgroundColor: '#252D3C',
+        marginBottom:20
     }
 
 });

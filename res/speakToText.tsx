@@ -53,6 +53,7 @@ const SpeechToText = () => {
         placeholder="Speak something..."
         placeholderTextColor='#2C0E55'
         style={{
+          color:'red',
           borderWidth: 1,
           borderColor: '#ccc',
           padding: 10,

@@ -9,7 +9,7 @@ import responsivePixels from "./responsivePixels";
 import fonts from "./fonts";
 import WeatherService from "./API/weatherService";
 
-const WeatherToday = () => {
+const WeatherToday:React.FC = () => {
   const city = "Ahmedabad"
   const [weather, setWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState([]);
@@ -39,7 +39,7 @@ const WeatherToday = () => {
       (position) => {
 
         setLocation(position?.coords);
-        console.log("location", location);
+        console.log("location today", position?.coords?.latitude, position?.coords?.longitude );
         if (position?.coords?.latitude, position?.coords?.longitude) {
           getWeather(position?.coords?.latitude, position?.coords?.longitude)
         }
@@ -56,9 +56,10 @@ const WeatherToday = () => {
 
   const getWeather = async (lat: number, lng: number) => {
     try {
-      
+      console.log("fetch weather called", lat, lng);
       const weatherRes = await WeatherService.getCurrentWeather(lat, lng);
-      setWeather(weatherRes.data);
+      setWeather(weatherRes?.data);
+      console.log("current weather data", weatherRes?.data);
       {
         weatherRes?.data?.coord?.lat, weatherRes?.data?.coord?.lon &&
           (
@@ -70,7 +71,7 @@ const WeatherToday = () => {
     } catch (error) {
       console.error(error);
       setWeather(null);
-      setLoading(false); // hide progress when done
+      // setLoading(false); // hide progress when done
     }
     finally {
       setLoading(false); // hide progress when done
@@ -108,7 +109,7 @@ const WeatherToday = () => {
       start={{ x: 0.5, y: 0 }}
       end={{ x: 0.5, y: 1 }}
     >
-
+<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
 
       {/* Weather Icon */}
       <Image
@@ -172,6 +173,7 @@ const WeatherToday = () => {
 
         </View>
       </LinearGradient>
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -194,18 +196,18 @@ const styles = StyleSheet.create({
     marginBottom: responsivePixels.size25,
   },
   temp: {
-    fontSize: fonts.size._50px,
+    fontSize: fonts.size._40px,
     fontWeight: "bold",
     color: "#fff",
     marginTop: responsivePixels.size10,
   },
   precip: {
-    fontSize: fonts.size._24px,
+    fontSize: fonts.size._20px,
     color: "#ddd",
     marginTop: responsivePixels.size5,
   },
   range: {
-    fontSize: fonts.size._22px,
+    fontSize: fonts.size._18px,
     color: "#bbb",
     marginBottom: responsivePixels.size20,
     fontWeight: 'bold'
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
     paddingBottom: responsivePixels.size8,
   },
   dateText: {
-    fontSize: fonts.size._20px,
+    fontSize: fonts.size._16px,
     fontWeight: "bold"
   },
   hourRow: {
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
   },
   hourTemp: {
     color: "#fff",
-    fontSize: fonts.size._14px,
+    fontSize: fonts.size._12px,
     marginBottom: responsivePixels.size5,
     fontWeight: 'bold'
   },
@@ -264,7 +266,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     borderRadius: responsivePixels.size25,
-    marginBottom: responsivePixels.size30,
+    marginBottom: responsivePixels.size20,
 
   }
 });

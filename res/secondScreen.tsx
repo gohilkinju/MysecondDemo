@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Button, useWindowDimensions } from 'react-native';
 
 const DATA = [
   { id: '1', time: '09:00 AM', details: 'Daily Standup Meeting' },
@@ -10,6 +10,8 @@ const DATA = [
 
 const secondScreen = () => {
   const [expandedId, setExpandedId] = useState(null);
+  const {fontScale} = useWindowDimensions(); 
+  const styles = makeStyles(fontScale); 
 
   const renderItem = ({ item }) => {
     const isExpanded = expandedId === item.id;
@@ -29,6 +31,9 @@ const secondScreen = () => {
     );
   };
 
+  
+  
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -37,18 +42,22 @@ const secondScreen = () => {
         renderItem={renderItem}
         extraData={expandedId}
       />
+
+      <Button onPress={() => console.log("button press!")} title="Press Me">
+
+      </Button>
     </View>
   );
 };
 
 
-const styles = StyleSheet.create({
+const makeStyles = (fontScale:any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
   },
   itemContainer: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#ed7e7eff',
     padding: 16,
     marginVertical: 8,
     borderRadius: 10,

@@ -18,7 +18,8 @@ import SpeechToText from './speakToText';
 import searchDetails from './searchDetails';
 import images from './images';
 import { Image } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import flatlistScreen from './flatlistScreen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator();
@@ -34,11 +35,11 @@ function bottomTabsNew() {
           let iconPath;
     
           if (route.name === 'weatherToday') {
-            iconPath = focused ? images.airQuality : images.airQuality;
+            iconPath = focused ? images.ic_home : images.ic_home;
           } else if (route.name === 'weatherForecast') {
-            iconPath = focused ? images.airQuality : images.airQuality;
+            iconPath = focused ? images.forecast : images.forecast;
           } else if (route.name === 'weatherSearch') {
-            iconPath = focused ? images.airQuality : images.airQuality;
+            iconPath = focused ? images.ic_search : images.ic_search;
           }
     
           return <Image source={iconPath} style={{ width: size, height: size, tintColor: color }} />;
@@ -61,8 +62,9 @@ function bottomTabsNew() {
 }
 export default function navigationScreen() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="mainScreen"  screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="thirdScreen"  screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="firstScreen" component={firstScreen} />
         <Stack.Screen name="secondScreen" component={secondScreen} />
@@ -70,6 +72,7 @@ export default function navigationScreen() {
         <Stack.Screen name="thirdScreen" component={thirdScreen} />
         <Stack.Screen name="forthScreen" component={forthScreen} />
         <Stack.Screen name="Weather" component={Weather} />
+         {/* weatherlyapp */}
         <Stack.Screen name="mainScreen" component={mainScreen} />
         <Stack.Screen name="weatherToday" component={weatherToday} />
       <Stack.Screen name="weatherForecast" component={weatherForecast} />
@@ -77,7 +80,11 @@ export default function navigationScreen() {
       <Stack.Screen name="bottomTabsNew" component={bottomTabsNew} />
       <Stack.Screen name="SpeechToText" component={SpeechToText} />
       <Stack.Screen name="searchDetails" component={searchDetails} />
+
+      <Stack.Screen name="flatlistScreen" component={flatlistScreen} />
+      
       </Stack.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

@@ -1,23 +1,25 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import fonts from "./fonts";
+import { hp, scaleFont, wp } from "./responsive2";
 
 
-const thirdScreen = () => {
+const thirdScreen:React.FC = () => {
 
     return (
         <View style={styles.chevron}>
-            <LinearGradient
-                colors={['#363E51', '#181C24']}
-                style={styles.gradient}
-            >
-                {/* <View style={styles.chevronMain} /> */}
-                <View style={[styles.chevronTriangle2, styles.chevronTopRight]} />
-            </LinearGradient>
+            <Text style={styles.description}>{"therd screen"}</Text>
         </View>
     );
 }
 const styles = StyleSheet.create({
+    description: {
+        fontSize: scaleFont(20),
+    color: '#eee',
+    marginTop: hp(10),
+    marginLeft: wp(20),
+    },
     gradient: {
         height:50,
         flexDirection: 'row',
@@ -25,13 +27,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     chevron: {
+        backgroundColor: "#363E51",
         width: "100%",
-        marginTop: 50,
         flex: 1,
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        
     },
     chevronMain: {
         width: "100%",

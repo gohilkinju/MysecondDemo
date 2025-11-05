@@ -27,7 +27,7 @@ const SlideItem = ({ item }) => {
 }
   ;
 
-const home = () => {
+const home:React.FC = () => {
 
   const name = "abcdefghijklmnopqrstuvwxyz"
 
